@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="ColorPicker.InputComponent"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Component">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -9,13 +10,19 @@
         
         <Label x:Name="Label_Input"
                Target="Input"
+               Content="{Binding ElementName=Component, 
+                                 Path=LabelContent,
+                                 Mode=OneWay}"
                Grid.Column="0"/>
         <Slider x:Name="Input"
                 Minimum="0"
                 Maximum="255"
+                Value="{Binding ElementName=Component,
+                                Path=Value, 
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}"
                 IsSnapToTickEnabled="True"
                 TickFrequency="1"
-                ValueChanged="Input_OnValueChanged"
                 Grid.Column="1"/>
     </Grid>
 </UserControl>

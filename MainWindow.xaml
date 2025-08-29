@@ -3,83 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:ColorPicker"
         
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" 
+        
+        Height="450" Width="800">
     <Window.Resources>
-        <local:DoubleToHexConverter x:Key="DoubleToHexConverter"/>
-        <local:DoubleToByteConverter x:Key="DoubleToByteConverter"/>
+        <local:DoubleToIntConverter x:Key="DoubleToIntConverter"/>
     </Window.Resources>
     
     <DockPanel LastChildFill="True">
         <StackPanel Orientation="Vertical"
                     DockPanel.Dock="Top">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-        
-                <Label x:Name="Label_Input_Alpha"
-                       Content="Alpha"
-                       Target="Input_Alpha"
-                       Grid.Column="0"/>
-                <Slider x:Name="Input_Alpha"
-                        Minimum="0"
-                        Maximum="255"
-                        IsSnapToTickEnabled="True"
-                        TickFrequency="1"
-                        Grid.Column="1"/>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-        
-                <Label x:Name="Label_Input_Red"
-                       Content="Red"
-                       Target="Input_Red"
-                       Grid.Column="0"/>
-                <Slider x:Name="Input_Red"
-                        Minimum="0"
-                        Maximum="255"
-                        IsSnapToTickEnabled="True"
-                        TickFrequency="1"
-                        Grid.Column="1"/>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-        
-                <Label x:Name="Label_Input_Green"
-                       Content="Gtreen"
-                       Target="Input_Green"
-                       Grid.Column="0"/>
-                <Slider x:Name="Input_Green"
-                        Minimum="0"
-                        Maximum="255"
-                        IsSnapToTickEnabled="True"
-                        TickFrequency="1"
-                        Grid.Column="1"/>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-        
-                <Label x:Name="Label_Input_Blue"
-                       Content="Blue"
-                       Target="Input_Blue"
-                       Grid.Column="0"/>
-                <Slider x:Name="Input_Blue"
-                        Minimum="0"
-                        Maximum="255"
-                        IsSnapToTickEnabled="True"
-                        TickFrequency="1"
-                        Grid.Column="1"/>
-            </Grid>
+            <local:InputComponent x:Name="Input_Alpha" 
+                                  LabelContent="Alpha"/>
+            <local:InputComponent x:Name="Input_Red" 
+                                  LabelContent="Red"/>
+            <local:InputComponent x:Name="Input_Green" 
+                                  LabelContent="Green"/>
+            <local:InputComponent x:Name="Input_Blue" 
+                                  LabelContent="Blue"/>
         </StackPanel>
         
         <StackPanel Orientation="Horizontal" 
@@ -90,24 +31,14 @@
                 <TextBox x:Name="RGBA"
                          IsReadOnly="True">
                     <TextBox.Text>
-                        <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}" >
+                        <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}">
+                            <Binding ElementName="Input_Alpha" Path="Value"/>
                             <Binding ElementName="Input_Red" Path="Value"/>
                             <Binding ElementName="Input_Green" Path="Value"/>
                             <Binding ElementName="Input_Blue" Path="Value"/>
-                            <Binding ElementName="Input_Alpha" Path="Value"/>
                         </MultiBinding>
                     </TextBox.Text>
                 </TextBox>
-                <!--<StackPanel x:Name="RGBA" Orientation="Horizontal">
-                    <TextBlock Text="RGBA: "/>
-                    <TextBlock Text="{Binding ElementName=Input_Red, Path=Value}"/>
-                    <TextBlock Text=", "/>
-                    <TextBlock Text="{Binding ElementName=Input_Green, Path=Value}"/>
-                    <TextBlock Text=", "/>
-                    <TextBlock Text="{Binding ElementName=Input_Blue, Path=Value}"/>
-                    <TextBlock Text=", "/>
-                    <TextBlock Text="{Binding ElementName=Input_Alpha, Path=Value}"/>
-                </StackPanel>-->
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="HEX"
@@ -115,11 +46,19 @@
                 <TextBox x:Name="HEX"
                          IsReadOnly="True">
                     <TextBox.Text>
-                        <MultiBinding Converter="{StaticResource ResourceKey=DoubleToHexConverter}">
-                            <Binding ElementName="Input_Alpha" Path="Value"/>
-                            <Binding ElementName="Input_Red" Path="Value"/>
-                            <Binding ElementName="Input_Green" Path="Value"/>
-                            <Binding ElementName="Input_Blue" Path="Value"/>
+                        <MultiBinding StringFormat="#{0:X2}{1:X2}{2:X2}{3:X2}">
+                            <Binding ElementName="Input_Alpha" 
+                                     Path="Value"
+                                     Converter="{StaticResource ResourceKey=DoubleToIntConverter}"/>
+                            <Binding ElementName="Input_Red" 
+                                     Path="Value"
+                                     Converter="{StaticResource ResourceKey=DoubleToIntConverter}"/>
+                            <Binding ElementName="Input_Green" 
+                                     Path="Value"
+                                     Converter="{StaticResource ResourceKey=DoubleToIntConverter}"/>
+                            <Binding ElementName="Input_Blue" 
+                                     Path="Value"
+                                     Converter="{StaticResource ResourceKey=DoubleToIntConverter}"/>
                         </MultiBinding>
                     </TextBox.Text>
                 </TextBox>

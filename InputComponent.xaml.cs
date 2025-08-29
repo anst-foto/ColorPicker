@@ -5,18 +5,26 @@ namespace ColorPicker;
 
 public partial class InputComponent : UserControl
 {
-    public string LabelText { get; set; }
-    public event Action<double> Action;
+    public static readonly DependencyProperty LabelContentProperty = 
+        DependencyProperty.Register(nameof(LabelContent), typeof(object), typeof(InputComponent));
+
+    public object LabelContent
+    {
+        get => GetValue(LabelContentProperty); 
+        set => SetValue(LabelContentProperty, value);
+    }
+    
+    public static readonly DependencyProperty ValueProperty = 
+        DependencyProperty.Register(nameof(Value), typeof(double), typeof(InputComponent));
+
+    public double Value
+    {
+        get => (double)GetValue(ValueProperty); 
+        set => SetValue(ValueProperty, value);
+    }
     
     public InputComponent()
     {
         InitializeComponent();
-        
-        Loaded += (sender, args) => Label_Input.Content = LabelText;
-    }
-
-    private void Input_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-    {
-        Action.Invoke(e.NewValue);
     }
 }
